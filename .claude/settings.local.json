@@ -9,7 +9,10 @@
       "Bash(npm install:*)",
       "Bash(npx tailwindcss init:*)",
       "Bash(pkill:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []
