@@ -9,6 +9,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { LoginView } from './components/LoginView';
 import { Roadmap } from './components/Roadmap';
 import { PrayerGuide } from './components/PrayerGuide';
+import './index.css';
 
 const App: React.FC = () => {
   const [role, setRole] = useState<Role>('JAMAAH');

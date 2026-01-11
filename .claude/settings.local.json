@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev)",
+      "Bash(curl:*)",
+      "Bash(npm run build:*)",
+      "Bash(cat:*)",
+      "Bash(npm run preview:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(pkill:*)",
+      "Bash(vercel:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
