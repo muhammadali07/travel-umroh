@@ -15,9 +15,89 @@ import { StatusChecker } from './components/StatusChecker';
 import { AIAssistant } from './components/AIAssistant';
 
 const DUMMY_LEADS: Lead[] = [
-  { id: '1', packageId: '1', packageName: 'Umroh Reguler Syawal', fullName: 'Ahmad Subarjo', whatsappNumber: '081234567890', numberOfPax: 2, hasPassport: 'YES', isFirstTime: true, roomPreference: 'DOUBLE', status: 'Completed', paymentStatus: 'PAID', amountPaid: 57000000, checkoutCode: 'ALB-K9X2P1', createdAt: new Date().toISOString() },
-  { id: '2', packageId: '3', packageName: 'Haji Furoda 2024', fullName: 'Hj. Siti Aminah', whatsappNumber: '08567891234', numberOfPax: 1, hasPassport: 'YES', isFirstTime: false, roomPreference: 'QUAD', status: 'FollowedUp', paymentStatus: 'PARTIAL', amountPaid: 100000000, checkoutCode: 'ALB-M7Z8L3', createdAt: new Date(Date.now() - 86400000).toISOString() },
-  { id: '3', packageId: '2', packageName: 'Umroh Plus Turki', fullName: 'Budi Hartono', whatsappNumber: '08771234567', numberOfPax: 4, hasPassport: 'NO', isFirstTime: true, roomPreference: 'QUAD', status: 'Pending', paymentStatus: 'UNPAID', amountPaid: 0, checkoutCode: 'ALB-R2W9Q4', createdAt: new Date(Date.now() - 172800000).toISOString() }
+  {
+    id: '1',
+    packageId: '1',
+    packageName: 'Umroh Reguler Syawal',
+    fullName: 'Ahmad Subarjo',
+    whatsappNumber: '081234567890',
+    numberOfPax: 2,
+    hasPassport: 'YES',
+    isFirstTime: true,
+    roomPreference: 'DOUBLE',
+    status: 'Completed',
+    paymentStatus: 'PAID',
+    amountPaid: 57000000,
+    checkoutCode: 'ALB-K9X2P1',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: '2',
+    packageId: '3',
+    packageName: 'Haji Furoda 2024',
+    fullName: 'Hj. Siti Aminah',
+    whatsappNumber: '08567891234',
+    numberOfPax: 1,
+    hasPassport: 'YES',
+    isFirstTime: false,
+    roomPreference: 'QUAD',
+    status: 'FollowedUp',
+    paymentStatus: 'PARTIAL',
+    amountPaid: 100000000,
+    checkoutCode: 'ALB-M7Z8L3',
+    createdAt: new Date(Date.now() - 86400000).toISOString()
+  },
+  {
+    id: '3',
+    packageId: '2',
+    packageName: 'Umroh Plus Turki',
+    fullName: 'Budi Hartono',
+    whatsappNumber: '08771234567',
+    numberOfPax: 4,
+    hasPassport: 'NO',
+    isFirstTime: true,
+    roomPreference: 'QUAD',
+    status: 'Pending',
+    paymentStatus: 'UNPAID',
+    amountPaid: 0,
+    checkoutCode: 'ALB-R2W9Q4',
+    createdAt: new Date(Date.now() - 172800000).toISOString()
+  },
+  {
+    id: '4',
+    packageId: '1',
+    packageName: 'Umroh Reguler Syawal',
+    fullName: 'Rina Kartika',
+    whatsappNumber: '08111222333',
+    numberOfPax: 3,
+    hasPassport: 'YES',
+    isFirstTime: false,
+    roomPreference: 'TRIPLE',
+    status: 'Completed',
+    paymentStatus: 'PAID',
+    amountPaid: 85500000,
+    checkoutCode: 'ALB-T5Y8U2',
+    adminNotes: 'Sudah berangkat tanggal 10 Syawal',
+    createdAt: new Date(Date.now() - 259200000).toISOString()
+  },
+  {
+    id: '5',
+    packageId: '2',
+    packageName: 'Umroh Plus Turki',
+    fullName: 'Dr. Rahman Hakim',
+    whatsappNumber: '08122334455',
+    numberOfPax: 2,
+    hasPassport: 'EXPIRED',
+    isFirstTime: true,
+    roomPreference: 'DOUBLE',
+    healthNotes: 'Alergi makanan laut',
+    status: 'FollowedUp',
+    paymentStatus: 'PARTIAL',
+    amountPaid: 72000000,
+    checkoutCode: 'ALB-F4H7J1',
+    adminNotes: 'Perlu perpanjangan passport',
+    createdAt: new Date(Date.now() - 345600000).toISOString()
+  }
 ];
 
 const App: React.FC = () => {
@@ -33,17 +113,39 @@ const App: React.FC = () => {
   useEffect(() => {
     try {
       const savedLeads = localStorage.getItem('albarkah_leads');
-      if (savedLeads && JSON.parse(savedLeads).length > 0) {
-        setLeads(JSON.parse(savedLeads));
+
+      if (savedLeads) {
+        const parsedLeads = JSON.parse(savedLeads);
+
+        // Check if leads have payment fields, if not reset with new data
+        const hasPaymentData = parsedLeads.length > 0 &&
+          parsedLeads[0].hasOwnProperty('paymentStatus') &&
+          parsedLeads[0].hasOwnProperty('amountPaid');
+
+        if (hasPaymentData) {
+          setLeads(parsedLeads);
+        } else {
+          // Old data format, reset with new dummy data
+          console.log('Resetting lead data with payment information...');
+          setLeads(DUMMY_LEADS);
+          localStorage.setItem('albarkah_leads', JSON.stringify(DUMMY_LEADS));
+        }
       } else {
+        // No data exists, use dummy data
         setLeads(DUMMY_LEADS);
         localStorage.setItem('albarkah_leads', JSON.stringify(DUMMY_LEADS));
       }
+
       if (localStorage.getItem('albarkah_auth') === 'true') {
         setIsLoggedIn(true);
         setRole('ADMIN');
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.error(e);
+      // Fallback to dummy data on error
+      setLeads(DUMMY_LEADS);
+      localStorage.setItem('albarkah_leads', JSON.stringify(DUMMY_LEADS));
+    }
     
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
