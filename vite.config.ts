@@ -18,6 +18,14 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      publicDir: 'public',
+      optimizeDeps: {
+        include: ['react', 'react-dom', '@google/genai']
+      },
+      build: {
+        target: 'esnext',
+        minify: 'esbuild'
       }
     };
 });

@@ -5,15 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=0">
   <title>Al-Barkah | Umroh & Haji Technology</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="manifest" href="/metadata.json">
   <meta name="theme-color" content="#064e3b">
-  
-  <!-- Apple Mobile Web App Meta -->
+
+  <!-- Mobile Web App Capable -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <!-- Apple Mobile Web App Meta (for iOS compatibility) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Al-Barkah">
-  <link rel="apple-touch-icon" href="https://picsum.photos/192/192">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,28 +53,19 @@
     .animate-slide-up {
       animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    
+
     /* PWA Install Prompt Spacer */
     @media all and (display-mode: standalone) {
       .safe-top { padding-top: var(--safe-top); }
       .safe-bottom { padding-bottom: var(--safe-bottom); }
     }
   </style>
-
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
-  }
-}
-</script>
 </head>
 <body class="antialiased text-slate-900 overflow-x-hidden">
-  <div id="root"></div>
-  
+  <div id="root">Loading...</div>
+
+  <script type="module" src="/index.tsx"></script>
+
   <script>
     // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
@@ -82,6 +75,10 @@
         });
       });
     }
+
+    // Debug: Check if root element exists
+    console.log('Root element:', document.getElementById('root'));
+    console.log('Body:', document.body);
   </script>
 </body>
 </html>

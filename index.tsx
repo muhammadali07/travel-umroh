@@ -1,4 +1,5 @@
 
+import './index.css';
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Role, TravelPackage, Lead } from './types';
