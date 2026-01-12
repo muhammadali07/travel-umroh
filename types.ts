@@ -39,7 +39,10 @@ export interface Lead {
   isFirstTime: boolean;
   roomPreference: 'QUAD' | 'TRIPLE' | 'DOUBLE';
   healthNotes?: string;
-  status: 'Pending' | 'FollowedUp' | 'Completed';
+  adminNotes?: string;
+  status: 'Pending' | 'FollowedUp' | 'Completed' | 'Cancelled';
+  paymentStatus: 'UNPAID' | 'PARTIAL' | 'PAID';
+  amountPaid: number;
   checkoutCode: string;
   createdAt: string;
 }

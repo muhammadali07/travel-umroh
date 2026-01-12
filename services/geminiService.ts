@@ -1,21 +1,12 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// Check if API key is available
-const apiKey = import.meta.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
-
-// Only initialize if API key is available
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const summarizeLeadData = async (leads: any[]) => {
-  if (!ai) {
-    console.warn("Gemini AI not initialized - API key missing");
-    return "Fitur AI tidak tersedia. Silakan set GEMINI_API_KEY di environment variables.";
-  }
-
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-exp',
+      model: 'gemini-3-flash-preview',
       contents: `Analisa data lead Umroh berikut dan berikan ringkasan singkat dalam Bahasa Indonesia mengenai tren minat jamaah: ${JSON.stringify(leads)}`,
     });
     return response.text;
@@ -25,20 +16,17 @@ export const summarizeLeadData = async (leads: any[]) => {
   }
 };
 
-export const generateMarketingCopy = async (packageName: string) => {
-  if (!ai) {
-    console.warn("Gemini AI not initialized - API key missing");
-    return "";
-  }
-
+export const startAIChat = async (history: { role: string, parts: { text: string }[] }[]) => {
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-exp',
-      contents: `Buat 2 kalimat persuasif untuk mengajak jamaah mendaftar paket ${packageName} sekarang juga.`,
+    const chat = ai.chats.create({
+      model: 'gemini-3-flash-preview',
+      config: {
+        systemInstruction: "Anda adalah 'Asisten Mutawwif Al-Barkah'. Anda ahli dalam memberikan panduan ibadah Umroh dan Haji sesuai sunnah. Berikan jawaban yang ramah, menenangkan, dan informatif. Gunakan Bahasa Indonesia yang sopan.",
+      },
     });
-    return response.text;
+    return chat;
   } catch (error) {
-    console.error("Gemini Error:", error);
-    return "";
+    console.error("Chat Init Error:", error);
+    return null;
   }
 };
